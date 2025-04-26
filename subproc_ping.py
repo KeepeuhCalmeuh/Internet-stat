@@ -4,23 +4,23 @@ import time
 
 def check_site_response_time(url):
     try:
-        response = requests.get(url, timeout=5)  # Timeout pour éviter les blocages
+        response = requests.get(url, timeout=5)  # Timeout to avoid blocking
         if response.status_code == 200:
-            response_time = response.elapsed.total_seconds()  # Temps de réponse en secondes
+            response_time = response.elapsed.total_seconds()  # Response time in seconds
             return response_time
         else:
-            return -1  # Code d'erreur pour un site inaccessible
+            return -1  # Error code for an inaccessible site
     except requests.exceptions.RequestException:
-        return -2  # Code d'erreur pour une exception
+        return -2  # Error code for an exception
 
 def slave_process(url):
     while True:
-        # Calculer le temps de réponse
+        # Calculate the response time
         response_time = check_site_response_time(url)
-        # Transmettre uniquement la valeur au maître
+        # Transmit only the value to the master
         sys.stdout.write(f"{response_time}\n")
         sys.stdout.flush()
-        time.sleep(1)  # Attendre 1 seconde avant le prochain ping
+        time.sleep(1)  # Wait 1 second before the next ping
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
