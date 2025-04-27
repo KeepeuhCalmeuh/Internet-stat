@@ -16,13 +16,16 @@ def process_response_times():
 
             # Ignore error codes (-1, -2)
             if response_time > 0:
+                # Convert response time to milliseconds
+                response_time_ms = response_time * 1000
+
                 # Add the response time to the list
                 if len(response_times) >= 10:
                     # Remove the oldest response time if the list exceeds 10 elements
                     response_times.pop(0)
-                    response_times.append(response_time)
+                    response_times.append(response_time_ms)
                 else:
-                    response_times.append(response_time)
+                    response_times.append(response_time_ms)
                 
                 # Perform calculations
                 mean = statistics.mean(response_times)
@@ -31,7 +34,7 @@ def process_response_times():
 
                 # Send the results to the main process
                 # ping, mean, variance, std_dev
-                sys.stdout.write(f"{response_time:.2f},{mean:.2f},{variance:.2f},{std_dev:.2f}\n")
+                sys.stdout.write(f"{response_time_ms:.2f},{mean:.2f},{variance:.2f},{std_dev:.2f}\n")
             elif response_time == -1:
                 # End the process if -1 is received
                 sys.stdout.write("Unreachable")

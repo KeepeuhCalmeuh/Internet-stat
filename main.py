@@ -68,7 +68,7 @@ def interact_with_slaves(url="https://github.com"):
                 unreachable_count = 0
             else:
                 result = split_string_to_tuple(result)  # Convert the string to a tuple
-                print(f"ping: {result[0]:.2f}, mean: {result[1]:.2f}, variance: {result[2]:.2f}, std_dev: {result[3]:.2f}")
+                print(f"ping: {result[0]:.2f} ms, mean: {result[1]:.2f} ms, std_dev: {result[3]:.2f} ms, (variance: {result[2]:.2f})")
     except KeyboardInterrupt:
         print("Stopping processes.")
         ping_process.terminate()
