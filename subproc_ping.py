@@ -2,16 +2,27 @@ import requests
 import sys
 import time
 
+ERROR_BAD_STATUS_CODE = -1
+ERROR_UNREACHABLE = -2
+
 def check_site_response_time(url):
     try:
         response = requests.get(url, timeout=5)  # Timeout to avoid blocking
+        print(f"response.status_code: {response.status_code}")  # Debugging line
         if response.status_code == 200:
-            response_time = response.elapsed.total_seconds()  # Response time in seconds
-            return response_time
+            return response.elapsed.total_seconds()  # Response time in seconds
         else:
-            return -1  # Error code for an inaccessible site
-    except requests.exceptions.RequestException:
-        return -2  # Error code for an exception
+            print(f"Bad status code received: {response.status_code}")
+            return ERROR_BAD_STATUS_CODE
+    except requests.exceptions.Timeout:
+        print("Request timed out.")
+        return ERROR_UNREACHABLE
+    except requests.exceptions.ConnectionError:
+        print("Connection error occurred.")
+        return ERROR_UNREACHABLE
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred: {e}")
+        return ERROR_UNREACHABLE
 
 def slave_process(url):
     while True:

@@ -67,8 +67,8 @@ ping : 0.22, mean : 0.23, variance : 0.01, std_dev : 0.08
 
 - The `subproc_calc.py` script maintains a sliding window of the last 10 response times for statistical calculations.
 - Negative response times indicate errors:
-  - `-1`: Site is inaccessible.
-  - `-2`: An exception occurred during the request.
+  - `-1`: not good response.status_code.
+  - `-2`: unreachable.
 
 ## License
 
