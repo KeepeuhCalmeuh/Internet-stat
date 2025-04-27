@@ -27,6 +27,7 @@ This project is a Python-based tool for monitoring and analyzing the response ti
 
 - Python 3.6 or higher
 - `requests` library (install using `pip install requests`)
+- `matplotlib` library (install using `pip install matplotlib`)
 
 ## Installation
 
@@ -53,13 +54,18 @@ This project is a Python-based tool for monitoring and analyzing the response ti
    ```bash
    python main.py https://example.com
    ```
-3. Press `Ctrl+C` to stop the script.
+3. To enable graph mode, add the argument `graph=true`:
+   ```bash
+   python main.py https://example.com graph=true
+   ```
+4. Press `Ctrl+C` to stop the script.
 
 ## Example Output
 
 ```
 No address provided. Using the default URL: https://github.com
 ping:  https://github.com
+Graph mode: disabled
 ping: 72.34 ms, mean: 72.34 ms, std_dev: 0.00 ms, (variance: 0.00)
 ping: 57.77 ms, mean: 65.05 ms, std_dev: 10.30 ms, (variance: 106.10)
 ping: 58.99 ms, mean: 63.03 ms, std_dev: 8.08 ms, (variance: 65.32)
