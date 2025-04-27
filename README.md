@@ -58,9 +58,13 @@ This project is a Python-based tool for monitoring and analyzing the response ti
 ## Example Output
 
 ```
-ping : 0.23, mean : 0.25, variance : 0.01, std_dev : 0.10
-ping : 0.24, mean : 0.24, variance : 0.00, std_dev : 0.07
-ping : 0.22, mean : 0.23, variance : 0.01, std_dev : 0.08
+No address provided. Using the default URL: https://github.com
+ping:  https://github.com
+ping: 72.34 ms, mean: 72.34 ms, std_dev: 0.00 ms, (variance: 0.00)
+ping: 57.77 ms, mean: 65.05 ms, std_dev: 10.30 ms, (variance: 106.10)
+ping: 58.99 ms, mean: 63.03 ms, std_dev: 8.08 ms, (variance: 65.32)
+ping: 335.90 ms, mean: 131.25 ms, std_dev: 136.59 ms, (variance: 18657.56)
+ping: 67.98 ms, mean: 118.59 ms, std_dev: 121.63 ms, (variance: 14793.77)
 ```
 
 ## Notes
