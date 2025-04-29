@@ -58,19 +58,27 @@ This project is a Python-based tool for monitoring and analyzing the response ti
    ```bash
    python main.py https://example.com graph=true
    ```
-4. Press `Ctrl+C` to stop the script.
+4. To enable export mode, add the argument `export=true`:
+   ```bash
+   python main.py https://example.com export=true
+   ```
+5. Press `Ctrl+C` to stop the script.
 
 ## Example Output
 
 ```
-No address provided. Using the default URL: https://github.com
-ping:  https://github.com
-Graph mode: disabled
-ping: 72.34 ms, mean: 72.34 ms, std_dev: 0.00 ms, (variance: 0.00)
-ping: 57.77 ms, mean: 65.05 ms, std_dev: 10.30 ms, (variance: 106.10)
-ping: 58.99 ms, mean: 63.03 ms, std_dev: 8.08 ms, (variance: 65.32)
-ping: 335.90 ms, mean: 131.25 ms, std_dev: 136.59 ms, (variance: 18657.56)
-ping: 67.98 ms, mean: 118.59 ms, std_dev: 121.63 ms, (variance: 14793.77)
+The URL https://example.com will be used.
+Using address: https://example.com
+Graph mode: enabled
+Export mode: enabled
+ping:  https://example.com
+ping: 374.63 ms, mean: 374.63 ms, std_dev: 0.00 ms, (variance: 0.00)
+ping: 303.29 ms, mean: 338.96 ms, std_dev: 50.45 ms, (variance: 2544.91)
+ping: 314.05 ms, mean: 330.66 ms, std_dev: 38.46 ms, (variance: 1479.23)
+ping: 321.06 ms, mean: 328.26 ms, std_dev: 31.77 ms, (variance: 1009.17)
+ping: 319.06 ms, mean: 326.42 ms, std_dev: 27.82 ms, (variance: 773.82)
+ping: 323.73 ms, mean: 325.97 ms, std_dev: 24.91 ms, (variance: 620.26)
+ping: 365.86 ms, mean: 331.67 ms, std_dev: 27.28 ms, (variance: 744.19)
 ```
 ![Illustration_Graph](Illustration_Graph.png)
 

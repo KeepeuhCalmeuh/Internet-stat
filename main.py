@@ -1,7 +1,6 @@
 import subprocess
 import sys  # Import sys to handle command-line arguments
-import matplotlib.pyplot as plt  # Import Matplotlib for graphing
-from collections import deque  # Import deque for efficient sliding window
+
 
 def split_string_to_tuple(input_string):
     """
@@ -32,7 +31,7 @@ def is_valid_ip(address):
     except ValueError:
         return False
 
-def interact_with_slaves(url="https://github.com", graph=False):
+def interact_with_slaves(url="https://github.com", graph=False, export=False):
     # Launch the subproc_ping script
     ping_process = subprocess.Popen(
         ["python", "subproc_ping.py", url],
@@ -54,6 +53,8 @@ def interact_with_slaves(url="https://github.com", graph=False):
 
     # Initialize graphing if graph=True
     if graph:
+        import matplotlib.pyplot as plt  # Import Matplotlib for graphing
+        from collections import deque  # Import deque for efficient sliding window
         plt.ion()  # Enable interactive mode
         fig, ax = plt.subplots()
         ping_values = deque(maxlen=100)  # Store up to 100 pings
@@ -63,6 +64,23 @@ def interact_with_slaves(url="https://github.com", graph=False):
         ax.set_xlabel("Ping Count")
         ax.set_ylabel("Ping (ms)")
         ax.legend()
+
+    if export:
+        import csv
+        import os  # Import os to check if the file exists
+        from datetime import datetime  # Import datetime for timestamping
+
+        logs_dir = "Logs"
+        if not os.path.exists(logs_dir):
+            os.makedirs(logs_dir)
+        
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        csv_file_path = os.path.join(logs_dir, f"ping_results_{timestamp}.csv")
+
+        csv_file = open(csv_file_path, mode="w", newline="")
+        csv_writer = csv.writer(csv_file)
+        csv_writer.writerow(["Ping (ms)", "Mean (ms)", "Variance", "Std Dev (ms)"])
+        csv_file.flush() # Ensure the header is written immediately
 
     try:
         print("ping: ", url)
@@ -92,6 +110,11 @@ def interact_with_slaves(url="https://github.com", graph=False):
                     ax.set_ylim(0, max(1000, max(ping_values) + 50))  # Adjust Y-axis dynamically
                     plt.gcf().canvas.manager.set_window_title(f"{url}   ping: {result[0]:.2f} ms, mean: {result[1]:.2f} ms, std_dev: {result[3]:.2f} ms, (variance: {result[2]:.2f})")
                     plt.pause(0.1)  # Pause to update the graph
+                
+                # Export results to CSV if export=True
+                if export:
+                    csv_writer.writerow(result)
+                    csv_file.flush() # Ensure data is written to the file
 
     except KeyboardInterrupt:
         print("Stopping processes.")
@@ -99,26 +122,34 @@ def interact_with_slaves(url="https://github.com", graph=False):
         calc_process.terminate()
         if graph:
             plt.close()  # Close the graph window
+        if export:
+            csv_file.close()
 
 if __name__ == "__main__":
     # Default URL if no argument is provided
     remote_address = "https://github.com"
     graph = False
+    export = False
 
     # Parse command-line arguments
     for arg in sys.argv[1:]:
         if arg.startswith("graph="):
             graph = arg.split("=")[1].lower() == "true"
+        if arg.startswith("export="):
+            export = arg.split("=")[1].lower() == "true"
         else:
-            remote_address = arg
-            if is_valid_ip(remote_address):
-                print(f"The IP address {remote_address} is valid.")
-                # Add "http://" in front of the IP address if no scheme is present
-                remote_address = f"http://{remote_address}"
-            else:
-                print(f"The URL {remote_address} will be used.")
+            # Ensure the argument is not an option before using it as a URL
+            if not arg.startswith("graph=") and not arg.startswith("export="):
+                remote_address = arg
+                if is_valid_ip(remote_address):
+                    print(f"The IP address {remote_address} is valid.")
+                    # Add "http://" in front of the IP address if no scheme is present
+                    remote_address = f"http://{remote_address}"
+                else:
+                    print(f"The URL {remote_address} will be used.")
 
     print(f"Using address: {remote_address}")
     print(f"Graph mode: {'enabled' if graph else 'disabled'}")
+    print(f"Export mode: {'enabled' if export else 'disabled'}")
 
-    interact_with_slaves(remote_address, graph)
+    interact_with_slaves(remote_address, graph, export)
