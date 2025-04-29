@@ -104,7 +104,8 @@ def interact_with_slaves(url="https://github.com", graph=False, export=False):
             else:
                 result = split_string_to_tuple(result)  # Convert the string to a tuple
                 print(f"ping: {result[0]:.2f} ms, mean: {result[1]:.2f} ms, std_dev: {result[3]:.2f} ms, (variance: {result[2]:.2f})")
-                
+                unreachable_count = 0  # Reset the unreachable count on successful ping
+
                 # Update graph if graph=True
                 if graph:
                     ping_values.append(result[0])  # Append the latest ping value
