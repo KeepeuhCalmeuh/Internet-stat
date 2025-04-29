@@ -75,7 +75,10 @@ def interact_with_slaves(url="https://github.com", graph=False, export=False):
             os.makedirs(logs_dir)
         
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        csv_file_path = os.path.join(logs_dir, f"ping_results_{url}_{timestamp}.csv")
+        
+        # Sanitize the URL for use in the filename
+        sanitized_url = url.replace("://", "_").replace("/", "_").replace(":", "_")
+        csv_file_path = os.path.join(logs_dir, f"ping_results_{sanitized_url}_{timestamp}.csv")
 
         csv_file = open(csv_file_path, mode="w", newline="")
         csv_writer = csv.writer(csv_file)
